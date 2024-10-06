@@ -1,0 +1,43 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore the virtual environment directory
+venv/
+
+# Ignore the key file for encryption
+key.key
+
+# Ignore the encrypted JSON database file
+passwords.json
+
+# Ignore log files
+*.log
+
+# Ignore Jupyter Notebook files
+*.ipynb
+
+# Ignore IDE configuration files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore any other temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore coverage files
+.coverage
+*.cover
+
+# Ignore any backup files (by pattern)
+*~
