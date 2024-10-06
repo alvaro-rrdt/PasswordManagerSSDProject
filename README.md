@@ -30,7 +30,7 @@ You need Python 3.6 or higher installed on your system. You can download it from
 First, clone the repository from GitHub to your local machine:
 
 ```bash
-git clone https://github.com/alvaro-rrdt/PasswordManagerSSDProject.git 
+git clone https://github.com/YOUR_USERNAME/PasswordManager.git
 cd PasswordManager
 ```
 
@@ -136,6 +136,4 @@ The application is designed to protect against unauthorized access to stored cre
 This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
 ---
-
-Ensure your repository is public so that it can be accessed for review. Happy coding!
 ```
