@@ -22,6 +22,9 @@ class PasswordManager:
             file.write(encrypted_data)
 
     def add_credential(self, service, username, password):
+        if not service or not username or not password:
+            print("Service, username, and password are required.")
+            return
         self.credentials[service] = {'username': username, 'password': password}
         self.save_credentials()
 
