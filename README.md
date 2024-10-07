@@ -111,6 +111,10 @@ This password manager employs robust security measures to protect user credentia
 3. **Password Generation**:
    - The application uses Python’s `secrets` module to generate strong passwords, utilizing a cryptographically secure random source to ensure unpredictability.
 
+4. **Security Considerations**:
+   - Major threats considered include unauthorized access to the device, malware, and physical theft. The application aims to protect against these threats by encrypting stored credentials.
+
+
 ## Discussion
 
 ### What Do We Protect Against?
