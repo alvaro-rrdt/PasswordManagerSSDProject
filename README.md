@@ -98,6 +98,7 @@ Enter the service name to retrieve: Gmail
 Username: user@gmail.com, Password: J4uT!e&D*2sX
 ```
 
+![Screenshot from 2024-10-10 12-27-10.png](../../Pictures/Screenshots/Screenshot%20from%202024-10-10%2012-27-10.png "console example")
 ## Security Model
 
 This password manager employs robust security measures to protect user credentials:
@@ -135,9 +136,16 @@ The application is designed to protect against unauthorized access to stored cre
 - **Single Device Storage**: The password manager currently supports storing credentials only on a single device. It does not synchronize across devices.
 - **No User Authentication**: Currently, the application does not implement any user authentication method (like a master password) to unlock access to the credentials.
 
-## License
+### Technical Answers:
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+1. **Programming Language/Technology**: Implemented in Python, a language known for its readability and wide range of libraries for security features.
 
+2. **Local Database/Vault**: User credentials are managed in a local JSON file, offering simplicity and ease of use for single-device storage.
+
+3. **Protection Measures**: Data is encrypted using AES, ensuring that unauthorized access to the database would not reveal credentials without the key.
+
+4. **Cryptographic Decisions**: The `cryptography` library is used for encryption due to its robust features and widespread adoption, ensuring secure data handling.
+
+5. **Password Generation**: Strong passwords are generated using Python's `secrets` module, which is designed specifically for cryptographic security.
 ---
 ```
