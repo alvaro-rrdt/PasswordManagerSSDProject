@@ -4,7 +4,7 @@ from encryption import encrypt_message, decrypt_message
 from password_generator import generate_password
 
 class PasswordManager:
-    def __init__(self, db_file='passwords.json'):
+    def __init__(self, master_passphrase, db_file='passwords.json'):
         self.db_file = db_file
         self.credentials = self.load_credentials()
 
