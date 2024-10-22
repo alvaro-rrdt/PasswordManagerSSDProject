@@ -1,3 +1,4 @@
+
 ```markdown
 # Password Manager
 
@@ -7,7 +8,7 @@ This project is a simple password manager designed to store user credentials sec
 
 ## Features
 
-- **Secure Storage**: Credentials are encrypted and stored locally in a JSON file.
+- **Secure Storage**: Credentials are encrypted using a master passphrase and stored locally in a JSON file.
 - **Strong Password Generation**: Generate secure and complex passwords using cryptographic randomness.
 - **User-Friendly Interface**: A simple command-line interface for interacting with the password manager.
 
@@ -51,18 +52,8 @@ source venv/bin/activate
 Install the necessary dependencies using pip:
 
 ```bash
-pip install cryptography
+pip install -r requirements.txt
 ```
-
-### Generate Encryption Key
-
-You need to generate an encryption key to store your credentials securely:
-
-```bash
-python -c "from encryption import generate_key; generate_key()"
-```
-
-This command will create a `key.key` file in your project directory.
 
 ## Usage
 
@@ -76,7 +67,11 @@ python password_manager.py
 
 ### Interacting with the Application
 
-1. When prompted, choose one of the following actions:
+1. First, you'll be prompted to enter your master passphrase:
+   - This passphrase must be at least 8 characters long
+   - Remember this passphrase as it's required to access your passwords
+
+2. Choose one of the following actions:
    - **Add a Credential**: Type `add` to save a new service credential.
      - You will be prompted to enter the service name, username, and password (you have the option to generate a random password by leaving the password input blank).
    - **Retrieve a Credential**: Type `get` to retrieve an existing credential.
@@ -86,6 +81,7 @@ python password_manager.py
 ### Example Interaction
 
 ```plaintext
+Enter your master passphrase: MySecurePassphrase123
 Do you want to add or get a credential? (add/get/exit): add
 Enter the service name: Gmail
 Enter your username: user@gmail.com
@@ -98,54 +94,51 @@ Enter the service name to retrieve: Gmail
 Username: user@gmail.com, Password: J4uT!e&D*2sX
 ```
 
-![Screenshot from 2024-10-10 12-27-10.png](../../Pictures/Screenshots/Screenshot%20from%202024-10-10%2012-27-10.png "console example")
 ## Security Model
 
 This password manager employs robust security measures to protect user credentials:
 
 1. **Encryption**: 
-   - Credentials are encrypted using AES (via the `cryptography` library) and stored in a local JSON file. The encryption ensures that stored passwords cannot be read without the corresponding key.
+   - Credentials are encrypted using AES (via the `cryptography` library)
+   - The encryption key is derived from the user's master passphrase using PBKDF2
+   - No encryption key is stored on disk
 
 2. **Key Management**:
-   - The encryption key is generated and stored in a separate file (`key.key`), ensuring it is not mixed with your data. It's crucial to keep this file safe, as losing it would mean losing access to the stored credentials.
+   - Instead of storing an encryption key, the application uses a master passphrase
+   - The master passphrase is used to derive the encryption key using a key derivation function
+   - This means the security relies on something the user knows (the passphrase) rather than something stored on disk
 
 3. **Password Generation**:
-   - The application uses Python’s `secrets` module to generate strong passwords, utilizing a cryptographically secure random source to ensure unpredictability.
-
-4. **Security Considerations**:
-   - Major threats considered include unauthorized access to the device, malware, and physical theft. The application aims to protect against these threats by encrypting stored credentials.
-
+   - The application uses Python's `secrets` module to generate strong passwords
+   - Utilizes cryptographically secure random source to ensure unpredictability
 
 ## Discussion
 
 ### What Do We Protect Against?
 
-The application is designed to protect against unauthorized access to stored credentials. Threat actors may include:
+The application is designed to protect against:
 
-- **Intruders**: Individuals who gain unauthorized access to the device.
-- **Malicious Software**: Malware that may try to access files.
-- **Physical Theft**: If the device is stolen, ensuring data stored is encrypted protects user credentials.
+- **File Access**: Even if someone gains access to the encrypted password file, they can't decrypt it without the master passphrase
+- **Malicious Software**: The master passphrase is never stored on disk
+- **Physical Theft**: If the device is stolen, the encrypted data remains secure without the master passphrase
 
 ### Security Considerations
 
-- **Best Practices**: The app follows security guidelines by using established libraries for encryption and secure password generation.
-- **User Behavior**: It's important for users not to share the `key.key` file and to maintain strong, unique passwords.
+- **Best Practices**: Uses industry-standard cryptographic practices (PBKDF2 for key derivation, AES for encryption)
+- **User Responsibility**: The security depends on choosing and protecting a strong master passphrase
 
 ## Limitations
 
-- **Single Device Storage**: The password manager currently supports storing credentials only on a single device. It does not synchronize across devices.
-- **No User Authentication**: Currently, the application does not implement any user authentication method (like a master password) to unlock access to the credentials.
+- **Single Device Storage**: The password manager currently supports storing credentials only on a single device
+- **Master Passphrase Recovery**: There is no way to recover passwords if the master passphrase is forgotten
+- **Memory Security**: The master passphrase and decrypted passwords exist in memory while the program runs
 
-### Technical Answers:
+## Dependencies
 
-1. **Programming Language/Technology**: Implemented in Python, a language known for its readability and wide range of libraries for security features.
+The following Python packages are required:
+- cffi==1.17.1
+- cryptography==43.0.1
+- pycparser==2.22
 
-2. **Local Database/Vault**: User credentials are managed in a local JSON file, offering simplicity and ease of use for single-device storage.
-
-3. **Protection Measures**: Data is encrypted using AES, ensuring that unauthorized access to the database would not reveal credentials without the key.
-
-4. **Cryptographic Decisions**: The `cryptography` library is used for encryption due to its robust features and widespread adoption, ensuring secure data handling.
-
-5. **Password Generation**: Strong passwords are generated using Python's `secrets` module, which is designed specifically for cryptographic security.
----
+These can be installed using the provided requirements.txt file.
 ```
