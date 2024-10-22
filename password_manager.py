@@ -37,25 +37,33 @@ class PasswordManager:
         return self.credentials.get(service, None)
 
 def main():
-    manager = PasswordManager()
     while True:
-        action = input("Do you want to add or get a credential? (add/get/exit): ").lower()
+        master_passphrase = input("Enter your master passphrase: ")
+        if len(master_passphrase) < 8:
+            print("Master passphrase should be at least 8 characters.")
+            continue
+        break
+
+    manager = PasswordManager(master_passphrase)
+    while True:
+        action = input("Do you want to add or get a password? (add/get/exit): ").lower()
         if action == 'add':
-            service = input("Enter the service name: ")
-            username = input("Enter your username: ")
-            password = input("Enter your password (or leave blank to generate a random one): ")
+            service = input("Enter service name: ")
+            username = input("Enter username: ")
+            password = input("Enter password or leave empty to generate one: ")
             if not password:
                 password = generate_password()
                 print(f"Generated password: {password}")
             manager.add_credential(service, username, password)
-            print("Credential saved.")
+            print("Credential added successfully.")
         elif action == 'get':
-            service = input("Enter the service name to retrieve: ")
+            service = input("Enter service name: ")
             credential = manager.get_credential(service)
             if credential:
-                print(f"Username: {credential['username']}, Password: {credential['password']}")
+                print(f"Username: {credential['username']}")
+                print(f"Password: {credential['password']}")
             else:
-                print("No credential found for that service.")
+                print("Credential not found.")
         elif action == 'exit':
             break
         else:
