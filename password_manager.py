@@ -6,18 +6,23 @@ from password_generator import generate_password
 class PasswordManager:
     def __init__(self, master_passphrase, db_file='passwords.json'):
         self.db_file = db_file
+        self.master_passphrase = master_passphrase
         self.credentials = self.load_credentials()
 
     def load_credentials(self):
         if os.path.exists(self.db_file):
             with open(self.db_file, 'rb') as file:
                 encrypted_data = file.read()
-                decrypted_data = decrypt_message(encrypted_data)
+            try:
+                decrypted_data = decrypt_message(encrypted_data, self.master_passphrase)
                 return json.loads(decrypted_data)
+            except Exception:
+                print("Invalid master passphrase or corrupted data.")
+                return {}
         return {}
 
     def save_credentials(self):
-        encrypted_data = encrypt_message(json.dumps(self.credentials))
+        encrypted_data = encrypt_message(json.dumps(self.credentials), self.master_passphrase)
         with open(self.db_file, 'wb') as file:
             file.write(encrypted_data)
 
